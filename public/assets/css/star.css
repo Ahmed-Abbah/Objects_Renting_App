@@ -1,0 +1,90 @@
+
+.rating input[type="radio"] {
+  display: none;
+}
+
+.rating label {
+  color: #ccc;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.rating label:before {
+  content: "\2606";
+}
+
+.rating input[type="radio"]:checked ~ label:before {
+  content: "\2605";
+  color: #ffc107;
+  /* Colorer les étoiles précédentes */
+  
+}
+
+.rating input[type="radio"]:not(:checked) ~ label:hover,
+.rating input[type="radio"]:not(:checked) ~ label:hover ~ label {
+  color: #ffdc75;
+}
+
+.rating input[type="radio"]:not(:checked) ~ label:before {
+  content: "\2605";
+}
+
+.rating input[type="radio"]:not(:checked) ~ label:hover:before,
+.rating input[type="radio"]:not(:checked) ~ label:hover ~ label:before {
+  content: "\2605";
+  color: #ffdc75;
+}
+
+/* Styles pour le bouton */
+  .comment {
+  display: inline-block;
+  position: relative;
+  width: 150px;
+  height: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 30px;
+  text-align: center;
+  color: #fff;
+  background-color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Styles pour la flèche */
+.comment::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 3px 0 3px;
+  border-color: #fff transparent transparent transparent;
+  transform: translateY(-50%);
+}
+
+/* Styles pour la liste déroulante */
+.comment select {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 24px;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  appearance: none;
+}
+
+/* Styles pour les options */
+.comment option {
+  font-weight: normal;
+}
