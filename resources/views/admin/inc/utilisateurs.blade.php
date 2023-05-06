@@ -30,6 +30,73 @@
 
 
 
+
+  <style>
+    /* The switch - the box around the slider */
+.switch {
+position: relative;
+display: inline-block;
+width: 60px;
+height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+
+/* The slider */
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #ccc;
+-webkit-transition: .4s;
+transition: .4s;
+}
+
+.slider:before {
+position: absolute;
+content: "";
+height: 26px;
+width: 26px;
+left: 4px;
+bottom: 4px;
+background-color: white;
+-webkit-transition: .4s;
+transition: .4s;
+}
+
+input:checked + .slider {
+background-color: #2196F3;
+}
+
+input:focus + .slider {
+box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+-webkit-transform: translateX(26px);
+-ms-transform: translateX(26px);
+transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+border-radius: 34px;
+}
+
+.slider.round:before {
+border-radius: 50%;
+}
+    </style>
+
+
 {{-- show utilisateur info modal start --}}
 <div class="modal fade" id="showUtilisateurModal" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -73,6 +140,52 @@
               <label for="ville">Ville</label>
               <input type="text" name="ville" id="ville" class="form-control" readonly>
             </div>
+
+
+
+
+
+
+            {{-- start --}}
+
+            <input type="hidden" name="user_status" id="user_status">
+
+            <div class="border-top mt-4 mb-3">
+              <div class="product-option mb-4 mt-4">
+                <small class="text-uppercase d-block fw-bolder mb-2">
+                Status de user:
+
+                <span class="fw-bold" id="statusLabel">
+
+                </span>
+                <br><br>Changer Statut:
+                <div class="d-flex justify-content-start" style="display:inline;">
+                <label class="switch">
+                    <input type="checkbox" id="annonce-status" data-id="" checked>
+                    <span class="slider round"></span>
+                </label>
+                
+                </div>
+                </small>
+                  
+              </div>
+            </div>  
+
+          
+
+            {{-- ens --}}
+
+
+
+
+
+
+
+
+
+
+
+
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
@@ -80,7 +193,7 @@
         </form>
       </div>
     </div>
-</div>
+  </div>
 {{-- eshow utilisateur info modal end --}}
 
 
@@ -146,7 +259,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.2/datatables.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
 
@@ -189,6 +303,31 @@
                     $("#tel").val(response.tel);
                     $("#adresse").val(response.adresse);
                     $("#ville").val(response.ville);
+
+                    $("#user_status").val(response.isBlocked);
+
+                    // Update the status label
+                    const statusLabel = document.getElementById("statusLabel");
+
+                    if (response.isBlocked == "0") {
+                        statusLabel.style.color = "green";
+                        statusLabel.textContent = "not blocked";
+                    } else if (response.isBlocked == "1") {
+                        statusLabel.style.color = "red";
+                        statusLabel.textContent = "blocked";
+                    }
+
+
+                    // Update the checkbox
+                    const annonceStatus = document.getElementById("annonce-status");
+                    annonceStatus.setAttribute("data-id", response.id);
+                    if (response.isBlocked == "0") {
+                        annonceStatus.setAttribute("checked", true);
+                    } else {
+                        annonceStatus.removeAttribute("checked");
+                    }
+
+
                     $("#emp_id").val(response.id);
                     // Update the user image
                     let imageUrl = '{{asset('')}}' + response.profile;
@@ -198,6 +337,68 @@
                     }
                 });
             });
+
+
+
+
+
+        $(document).on('click', '#annonce-status', function() {
+            // get the new status
+            var newStatus = $(this).prop('checked') ? 0 : 1;
+            console.log(newStatus);
+            
+            // show the confirmation alert
+            swal({
+                title: "Confirmation",
+                text: "Are you sure you want to change the user status?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willChange) => {
+                // if the user confirms the status change, update the user status
+                if (willChange) {
+                    updateUserStatus(newStatus);
+                } else {
+                    // if the user cancels the status change, revert the checkbox state
+                    $(this).prop('checked', !$(this).prop('checked'));
+                }
+                // refresh the page after the user clicks OK or Cancel
+                location.reload();
+            });
+        });
+
+        function updateUserStatus(newStatus) {
+        // get the user ID
+        var userId = $('#emp_id').val();
+        
+        // send an AJAX request to update the user status
+        $.ajax({
+            url: '{{ route('updateUserStatus') }}',
+            method: 'post',
+            data: {
+                id: userId,
+                status: newStatus,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                // update the user status label and checkbox
+                var statusLabel = $('#statusLabel');
+                if (newStatus == 0) {
+                    statusLabel.text('not blocked');
+                    statusLabel.css('color', 'green');
+                    $('#annonce-status').prop('checked', true);
+                } else {
+                    statusLabel.text('blocked');
+                    statusLabel.css('color', 'red');
+                    $('#annonce-status').prop('checked', false);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+            }
+        });
+    }
 
 
 

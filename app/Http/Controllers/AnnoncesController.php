@@ -316,6 +316,8 @@ public function louerObjet($id){
 
 
 
+    $user_bl = 0;
+
     $users = []; // create empty array to store users
 
 
@@ -333,6 +335,11 @@ public function louerObjet($id){
                     $clientId = $review->id_client;
 
                     $user = User::find($clientId);
+
+                    if ($user->isBlocked == 1){
+                        $user_bl++;
+                        continue;
+                    }
                     
                     $user->id = $clientId;    
                     $user->name = $user->name;
@@ -379,6 +386,12 @@ public function louerObjet($id){
         $annonce->number_comment = 0;
         $annonce->note = 0;
 
+    }
+
+    if($annonce->number_comment == 0){
+        $annonce->number_comment = 0;
+    } else {
+        $annonce->number_comment = $annonce->number_comment - $user_bl;
     }
 
     // dd($users);

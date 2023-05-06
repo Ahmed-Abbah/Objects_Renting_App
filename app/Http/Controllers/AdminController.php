@@ -177,6 +177,7 @@ class AdminController extends Controller
                         <th>Prénom</th>
                         <th>Email</th>
                         <th>Téléphone</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -189,6 +190,7 @@ class AdminController extends Controller
                         <td>'. $emp->prenom . '</td>
                         <td>'. $emp->email . '</td>
                         <td>'. $emp->tel . '</td>
+                        <td>'. ($emp->isBlocked  == 0 ? 'not blocked' : 'blocked') . '</td>
                         <td>
                             <a href="#" id="' . $emp->id . '" class="text-success mx-1 showUtilisateur" data-bs-toggle="modal" data-bs-target="#showUtilisateurModal"><i class="bi bi-eye h4"></i></a>
                         </td>
@@ -358,6 +360,31 @@ class AdminController extends Controller
 		return response()->json($emp);
 	}
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // change block status
+    public function updateUserStatus(Request $request)
+    {
+        $id = $request->input('id');
+        $status = $request->input('status');
+        $user = User::find($id);
+        $user->isBlocked = $status;
+        $user->update();
+        
+        return response()->json(['success' => true]);
+    }
     
     
     

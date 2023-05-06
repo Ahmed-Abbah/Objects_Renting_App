@@ -118,6 +118,7 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('utilisateurs', [AdminController::class, 'view_utilisateurs'])->name('admin.utilisateurs');
     Route::get('/fetchAllUtilisateurs', [AdminController::class, 'fetchAllUtilisateurs'])->name('fetchAllUtilisateurs');
     Route::get('/showUtilisateur', [AdminController::class, 'showUtilisateur'])->name('showUtilisateur');
+    Route::post('/updateUserStatus', [AdminController::class, 'updateUserStatus'])->name('updateUserStatus');
     
     //reservations routes
     Route::get('reservations', [AdminController::class, 'view_reservations'])->name('admin.reservations');
