@@ -86,19 +86,21 @@
                               <!-- Slides -->
                                  
                               @foreach ($reviews as $key=> $review)
+                              @php
+                              $id_partenaire2=$review->id_client;
+                                  $partenaire=  DB::table('users')
+                                
+            
+                                  ->where('id', '=', $id_partenaire2)
+                                  
+          
+                                  ->first();
+                              @endphp
+                              @if ($partenaire->isBlocked == 0)
                                   <div class="swiper-slide" >
                                       <div class="flex2">
                                           <div class="comments2">
-                                          @php
-                                          $id_partenaire2=$review->id_client;
-                                              $partenaire=  DB::table('users')
-                                            
-                        
-                                              ->where('id', '=', $id_partenaire2)
-                                              
-                      
-                                              ->first();
-                                          @endphp
+                                        
                                               {{$review->commantaire_client_partenaire}}
                                           </div>
                                           <div class="profile2">
@@ -108,21 +110,24 @@
                                           </div>
                                       </div>
                                   </div>
+                                @endif
                               @endforeach
                               @foreach ($reviews2 as $key=> $review)
+                              @php
+                              $id_client2=$review->id_partenaire;
+                                  $client=  DB::table('users')
+                                
+            
+                                  ->where('id', '=', $id_client2)
+                                  
+          
+                                  ->first();
+                              @endphp
+                                @if ($client->isBlocked == 0)
                                   <div class="swiper-slide" >
                                       <div class="flex2">
                                           <div class="comments2">
-                                          @php
-                                          $id_client2=$review->id_partenaire;
-                                              $client=  DB::table('users')
-                                            
-                        
-                                              ->where('id', '=', $id_client2)
-                                              
-                      
-                                              ->first();
-                                          @endphp
+                                        
                                               {{$review->commantaire_partenaire_client}}
                                           </div>
                                           <div class="profile2">
@@ -132,6 +137,7 @@
                                           </div>
                                       </div>
                                   </div>
+                                  @endif
                               @endforeach
                                   {{-- <div class="swiper-slide">
                                       <div class="flex2">

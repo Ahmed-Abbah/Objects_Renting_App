@@ -60,36 +60,53 @@ class CategoryController extends Controller
             if (Auth::check()) {
                 $query = DB::table('annonces')
         
-                ->join('images', 'annonces.id', '=', 'images.id_annonce')
+          
                 ->join('objets', 'annonces.id_objet', '=', 'objets.id')
+           
                 ->leftJoin('reservations', 'annonces.id', '=', 'reservations.id_annonce')
                 ->leftJoin('reviews', 'reservations.id', '=', 'reviews.id_reservation')
+                ->leftJoin('images', function ($join) {
+                    $join->on('annonces.id_objet', '=', 'images.id_annonce')
+                        ->whereRaw("FIND_IN_SET(images.id, annonces.images) > 0");
+                        
+                })
            
     
                 ->join('categories', 'objets.id_categorie', '=', 'categories.id')
                 ->join('disponibilites', 'annonces.id', '=', 'disponibilites.id_annonce')
+                ->join('users', 'annonces.id_partenaire', '=', 'users.id')
+                ->where('users.isBlocked', '=', 0)
                 ->where('annonces.status', '=', 'enligne')
+
+                
                 ->where('annonces.id_partenaire', '!=', Auth::id())
                 ->select('annonces.id','annonces.created_at','annonces.titre', 'annonces.ville','annonces.description', 
                 'annonces.prix', DB::raw('MIN(images.image) as image'),DB::raw('AVG(reviews.note_client_objet)*20 as note'),
-                DB::raw('AVG(reviews.note_client_objet) as note_avg')
+                DB::raw('AVG(reviews.note_client_objet) as note_avg'),'annonces.id_partenaire'
                 ,'objets.nom_objet', 'categories.nom_categorie'
                 ,'disponibilites.date_debut','disponibilites.date_fin','disponibilites.jour_semaine','disponibilites.min_jour',
                 )
           
-                ->groupBy('annonces.id','annonces.created_at', 'annonces.titre', 'annonces.description', 'annonces.prix', 
+                ->groupBy('annonces.id','annonces.id_partenaire','annonces.created_at', 'annonces.titre', 'annonces.description', 'annonces.prix', 
                 'annonces.ville', 'objets.nom_objet', 'categories.nom_categorie','disponibilites.id_annonce','disponibilites.date_debut','disponibilites.date_fin','disponibilites.jour_semaine','disponibilites.min_jour',
                 );
 
 
                 
                 $query2=  DB::table('annonces')
+                ->leftJoin('images', function ($join) {
+                    $join->on('annonces.id_objet', '=', 'images.id_annonce')
+                        ->whereRaw("FIND_IN_SET(images.id, annonces.images) > 0");
+                        
+                })
                 ->leftJoin('reservations', 'annonces.id', '=', 'reservations.id_annonce')
                 ->leftJoin('reviews', 'reservations.id', '=', 'reviews.id_reservation')
-                ->join('images', 'annonces.id', '=', 'images.id_annonce')
+   
                 ->join('disponibilites', 'annonces.id', '=', 'disponibilites.id_annonce')
                 ->join('objets', 'annonces.id_objet', '=', 'objets.id')
                 ->join('categories', 'objets.id_categorie', '=', 'categories.id')
+                ->join('users', 'annonces.id_partenaire', '=', 'users.id')
+                ->where('users.isBlocked', '=', 0)
                 ->where('annonces.status', '=', 'enligne')
                 ->where('annonces.id_partenaire', '!=', Auth::id())
                 ->groupBy('annonces.id','annonces.titre','annonces.prix','annonces.created_at','annonces.ville','annonces.description',
@@ -303,7 +320,11 @@ class CategoryController extends Controller
                 } else {
                     $query = DB::table('annonces')
         
-                    ->join('images', 'annonces.id', '=', 'images.id_annonce')
+                    ->leftJoin('images', function ($join) {
+                        $join->on('annonces.id_objet', '=', 'images.id_annonce')
+                            ->whereRaw("FIND_IN_SET(images.id, annonces.images) > 0");
+                            
+                    })
                     ->join('objets', 'annonces.id_objet', '=', 'objets.id')
                     ->leftJoin('reservations', 'annonces.id', '=', 'reservations.id_annonce')
                     ->leftJoin('reviews', 'reservations.id', '=', 'reviews.id_reservation')
@@ -311,6 +332,8 @@ class CategoryController extends Controller
         
                     ->join('categories', 'objets.id_categorie', '=', 'categories.id')
                     ->join('disponibilites', 'annonces.id', '=', 'disponibilites.id_annonce')
+                    ->join('users', 'annonces.id_partenaire', '=', 'users.id')
+                    ->where('users.isBlocked', '=', 0)
                     ->where('annonces.status', '=', 'enligne')
                     ->select('annonces.id','annonces.created_at','annonces.titre', 'annonces.ville','annonces.description', 
                     'annonces.prix', DB::raw('MIN(images.image) as image'),DB::raw('AVG(reviews.note_client_objet)*20 as note'),
@@ -328,10 +351,16 @@ class CategoryController extends Controller
                     $query2=  DB::table('annonces')
                     ->leftJoin('reservations', 'annonces.id', '=', 'reservations.id_annonce')
                     ->leftJoin('reviews', 'reservations.id', '=', 'reviews.id_reservation')
-                    ->join('images', 'annonces.id', '=', 'images.id_annonce')
+                    ->leftJoin('images', function ($join) {
+                        $join->on('annonces.id_objet', '=', 'images.id_annonce')
+                            ->whereRaw("FIND_IN_SET(images.id, annonces.images) > 0");
+                            
+                    })
                     ->join('disponibilites', 'annonces.id', '=', 'disponibilites.id_annonce')
                     ->join('objets', 'annonces.id_objet', '=', 'objets.id')
                     ->join('categories', 'objets.id_categorie', '=', 'categories.id')
+                    ->join('users', 'annonces.id_partenaire', '=', 'users.id')
+                    ->where('users.isBlocked', '=', 0)
                     ->where('annonces.status', '=', 'enligne')
                     ->groupBy('annonces.id','annonces.titre','annonces.prix','annonces.created_at','annonces.ville','annonces.description',
                     'objets.nom_objet','categories.nom_categorie','disponibilites.id_annonce','disponibilites.date_debut','disponibilites.date_fin',

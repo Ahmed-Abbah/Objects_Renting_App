@@ -14,9 +14,16 @@
 															<i class="fas fa-paper-plane" aria-hidden="true"></i>
 															<h2>{{$row->nom_objet}} </h2>
 											</div>
-											{{-- <div class="price">
-													<p><span style="color: black;front-size:12px;">Client</span> {{$row->name}} {{$row->prenom}} </p>
-											</div> --}}
+                                            @php
+                                            // dd($row->id_client);
+                                            $id_client=$row->id_client;
+                                            // dd($id_partenaire)
+                                            $info = DB::table('users')->find($id_client);
+                                            // dd($info)
+                                        @endphp
+                                        <div class="price">
+                                            <p><span style="color: black;front-size:12px;">Client :</span> {{$info->name}} {{$info->prenom}} </p>
+                                        </div>
 											<div class="option">
 											<ul>
 													<li> <p> {{$row->description}}</p> </li>
@@ -34,7 +41,7 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             
-                                            <h4 class="modal-title"><h3>Convention de location de matériel</h3></h4>
+                                            <h4 class="modal-title"><h3>Evaluation de partenaire sur le client</h3></h4>
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         </div>
                                         <div class="modal-body">
@@ -44,8 +51,8 @@
 
                                                 @csrf
                                                 
-                                                    <div class="d-flex justify-content-between align-items-center mt-7" style="width:600px">
-                                                        <label for="exampleInputPassword1">Note de partenaire</label>                   
+                                                    {{-- <div class="d-flex justify-content-between align-items-center mt-7" style="width:600px"> --}}
+                                                        <label for="exampleInputPassword1">Note sur client</label>                   
                                                         <div class="rating">
                                                             <input type="radio" name="stars" value="5" id="star5">
                                                             <label for="star5"></label>
@@ -63,9 +70,9 @@
                                                     
                                                         
                                                 
-                                                    </div> 
+                                                    {{-- </div>  --}}
                                                     <div class="form-group">
-                                                        <label for="exampleInputPassword1">comment partenaire</label>
+                                                        <label for="exampleInputPassword1">commentaire sur client</label>
                                                         <input type="text" class="form-control" id="exampleInputPassword1"  name="comment_part" style="width:55%">
                                                     </div> 
                                                 

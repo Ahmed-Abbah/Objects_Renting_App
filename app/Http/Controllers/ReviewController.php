@@ -24,9 +24,9 @@ class ReviewController extends Controller
       
         ->join('objets', 'annonces.id_objet', '=', 'objets.id')
 
-        ->groupBy('users.name','users.prenom', 'reservations.date_fin','users.ville','annonces.description','annonces.id_partenaire','reservations.id','reservations.id_annonce','objets.nom_objet')
+        ->groupBy('users.name','users.prenom', 'reservations.date_fin','users.ville','annonces.description','annonces.id_partenaire','reservations.id','reservations.id_client','reservations.id_annonce','objets.nom_objet')
         
-        ->select('users.name','users.prenom','users.ville','annonces.id_partenaire','annonces.description','annonces.id_partenaire','reservations.id', 'reservations.date_fin','reservations.id_annonce','objets.nom_objet')
+        ->select('users.name','users.prenom','users.ville','annonces.id_partenaire','annonces.description','annonces.id_partenaire','reservations.id','reservations.id_client', 'reservations.date_fin','reservations.id_annonce','objets.nom_objet')
         ->where('annonces.id_partenaire','=',$id_user)
         ->where('reservations.review_partenaire','=','yes')
         ->get();

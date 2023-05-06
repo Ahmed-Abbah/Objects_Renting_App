@@ -6,97 +6,102 @@
 			<div class="container">
 				@if(count($query1) > 0)
 					<div class="row">
-						@foreach($query1 as $key=> $row)
-							<div class="col-sm-4">
-								<div class="glisser">
-									<div class="card text-center">
-											<div class="title">
-															<i class="fas fa-paper-plane" aria-hidden="true"></i>
-															<h2>{{$row->nom_objet}} </h2>
-											</div>
-											{{-- <div class="price">
-													<p><span style="color: black;front-size:12px;">Partenaire</span> {{$row->name}} {{$row->prenom}} </p>
-											</div> --}}
-											<div class="option">
-											<ul>
-													<li> <p> {{$row->description}}</p> </li>
-													<li> vous avez jusqu'a {{ date('Y-m-d', strtotime($row->date_fin.' +7 day')) }} pous ajouter votre evaluation</li>
+					@foreach($query1 as $key=> $row)
+                                                    <div class="col-sm-4">
+                                                        <div class="glisser">
+                                                                <div class="card text-center">
+                                                                    <div class="title">
+                                                                                    <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                                                                                    <h2>{{$row->nom_objet}} </h2>
+                                                                    </div>
+                                                                    @php
+                                                                        $id_partenaire=$row->id_partenaire;
+                                                                        $info = DB::table('users')->find($id_partenaire);
+                                                                        // dd($info)
+                                                                    @endphp
+                                                                    <div class="price">
+                                                                        <p><span style="color: black;front-size:12px;">Partenaire :</span> {{$info->name}} {{$info->prenom}} </p>
+                                                                    </div>
+                                                                    <div class="option">
+                                                                        <ul>
+                                                                                <li> <p> {{$row->description}}</p> </li>
+                                                                                <li> vous avez jusqu'a {{ date('Y-m-d', strtotime($row->date_fin.' +7 day')) }} pous ajouter votre evaluation</li>
 
-											</ul>
-											</div>
-											<a style="text-decoration: none;" href="{{route('add_review_client',$row->id)}}" id="payBtn">Ajouter review</a>
-										</div>
-									</div>
-							</div>
-                            <div class="modal fade" id="myModal" role="dialog">
-                                <div class="modal-dialog">
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            
-                                            <h4 class="modal-title"><h3>Convention de location de matériel</h3></h4>
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        </div>
-                                        <div class="modal-body">        
+                                                                        </ul>
+                                                                    </div>
+                                                                    <a style="text-decoration: none;" href="{{route('add_review_client',$row->id)}}" id="payBtn">Ajouter review</a>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="myModal" role="dialog">
+                                                        <div class="modal-dialog">
+                                                            <!-- Modal content-->
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    
+                                                                    <h4 class="modal-title"><h3>Evaluation de client  sur le  partenaire</h3></h4>
+                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                </div>
+                                                                <div class="modal-body">        
 
-<form action="{{route('store_review_client',$row->id)}}" method="POST">
+                        <form action="{{route('store_review_client',$row->id)}}" method="POST">
 
-    @csrf
-    
-        
-            <label for="exampleInputPassword1">Note sur le partenaire</label>                   
-            <div class="rating">
-                <input type="radio" name="note_partenaire" value="5" id="star5">
-                <label for="star5"></label>
-                <input type="radio" name="note_partenaire" value="4" id="star4">
-                <label for="star4"></label>
-                <input type="radio" name="note_partenaire" value="3" id="star3">
-                <label for="star3"></label>
-                <input type="radio" name="note_partenaire" value="2" id="star2">
-                <label for="star2"></label>
-                <input type="radio" name="note_partenaire" value="1" id="star1">
-                <label for="star1"></label>
-            </div>
-            
-           
+                            @csrf
+                            
+                                
+                                    <label for="exampleInputPassword1">Note sur le partenaire</label>                   
+                                    <div class="rating">
+                                        <input type="radio" name="note_partenaire" value="5" id="star5">
+                                        <label for="star5"></label>
+                                        <input type="radio" name="note_partenaire" value="4" id="star4">
+                                        <label for="star4"></label>
+                                        <input type="radio" name="note_partenaire" value="3" id="star3">
+                                        <label for="star3"></label>
+                                        <input type="radio" name="note_partenaire" value="2" id="star2">
+                                        <label for="star2"></label>
+                                        <input type="radio" name="note_partenaire" value="1" id="star1">
+                                        <label for="star1"></label>
+                                    </div>
+                                    
+                                
 
 
-            
-            
-    
-    
+                                    
+                                    
+                            
+                            
 
-        <div class="form-group">
-            <label for="exampleInputPassword1">comment sur le partenaire</label>
-            <input type="text" class="form-control" id="exampleInputPassword1"  name="comment_client_partenaire">
-        </div>
-        
-        <label for="exampleInputPassword1">Note sur l'objet</label>                   
-        <div class="rating">
-            <input type="radio" name="note_objet" value="5" id="star5">
-            <label for="star5"></label>
-            <input type="radio" name="note_objet" value="4" id="star4">
-            <label for="star4"></label>
-            <input type="radio" name="note_objet" value="3" id="star3">
-            <label for="star3"></label>
-            <input type="radio" name="note_objet" value="2" id="star2">
-            <label for="star2"></label>
-            <input type="radio" name="note_objet" value="1" id="star1">
-            <label for="star1"></label>
-        </div>
-        
-        <div class="form-group">
-            <label for="exampleInputPassword1">comment sur l'objet</label>
-            <input type="text" class="form-control" id="exampleInputPassword1"  name="comment_client_objet">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-</div>
-</div>
-</div>
-</div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">commentaire sur le partenaire</label>
+                                    <input type="text" class="form-control" id="exampleInputPassword1"  name="comment_client_partenaire">
+                                </div>
+                                
+                                <label for="exampleInputPassword1">Note sur l'objet</label>                   
+                                <div class="rating">
+                                    <input type="radio" name="note_objet" value="5" id="star5">
+                                    <label for="star5"></label>
+                                    <input type="radio" name="note_objet" value="4" id="star4">
+                                    <label for="star4"></label>
+                                    <input type="radio" name="note_objet" value="3" id="star3">
+                                    <label for="star3"></label>
+                                    <input type="radio" name="note_objet" value="2" id="star2">
+                                    <label for="star2"></label>
+                                    <input type="radio" name="note_objet" value="1" id="star1">
+                                    <label for="star1"></label>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">commentaire sur l'objet</label>
+                                    <input type="text" class="form-control" id="exampleInputPassword1"  name="comment_client_objet">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
 
-							@endforeach
+                    @endforeach
 									</div>
 									@else
 									<div class="no-results">
