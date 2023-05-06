@@ -296,8 +296,22 @@ public function louerObjet($id){
     $annonce->date_debut = Disponibilite::where('id_annonce', $annonce->id)->first()->date_debut;
     $annonce->date_fin = Disponibilite::where('id_annonce', $annonce->id)->first()->date_fin;
     $annonce->jour_semaine= Disponibilite::where('id_annonce', $annonce->id)->get();
-    
-    $annonce->images = Image::where('id_annonce', $annonce->id)->get();
+    //thislinedown
+    //$annonce->images = Image::where('id_annonce', $annonce->id)->get();
+    //gotchangedwiththisdown
+    $listImagesID = explode(',', $annonce->images);
+
+        $imageList = []; // Initialize an array to hold the Image objects
+
+        foreach ($listImagesID as $singleImageID) {
+            // Retrieve the Image object with the given ID
+            $newImage = Image::find($singleImageID);
+            $imageList[] = $newImage; // Add the Image object to the array
+        }
+
+        $annonce->images = collect($imageList);
+
+        //thisup
     $annonce->disponibilite = Disponibilite::where('id_annonce', $annonce->id)->get();
 
 
