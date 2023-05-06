@@ -512,7 +512,7 @@ public function getImages(Request $request)
         foreach ($objet->images as $image) {
             $imagesHtml .= '<div style="border: 2px solid #ddd; padding: 10px; display: inline-block; margin: 10px; position: relative;">';
             $imagesHtml .= '<label style="position: absolute; top: -10px; right: -10px;">';
-            $imagesHtml .= '<input type="checkbox" name="imagesIds[]" value="'. $image->id .'" style="display: none;">';
+            $imagesHtml .= '<input type="checkbox" name="imagesIds[]" value="'. $image->id-1 .'" style="display: none;">';
             $imagesHtml .= '</label>';
             $imagesHtml .= '<img src="'. asset('storage/images/annonce/' . $image->image) . '" alt="'. $image->image .'" width="200" style="cursor: pointer;">';
             $imagesHtml .= '<div class="selected-text" style="position: absolute; top: 50%; left: 50%; background-color: rgba(0, 255, 0, 0.5); color: white; padding: 5px; display: none;transform: translate(-50%, -50%);">';
