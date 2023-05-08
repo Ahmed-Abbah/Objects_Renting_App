@@ -205,7 +205,7 @@
                 <div class="container py-lg-8 position-relative z-index-10 d-flex align-items-center" data-aos="fade-left">
                     <div class="py-8 d-flex justify-content-end align-items-start align-items-lg-end flex-column col-lg-4 text-lg-end">
                         <p class="small fw-bolder text-uppercase tracking-wider mb-2 text-muted">Performances extremes</p>
-                        <h2 class="display-5 fw-bold mb-3">The North Face</h2>
+                        <h2 class="display-5 fw-bold mb-3">Share It</h2>
                         <p class="lead d-none d-lg-block">Soyez prêt toute l'année avec notre sélection d'objets  parfaites à tout moment de l'année et tout au long de l'année. Choisissez parmi une variété de nuances de couleurs et de styles </p>
                         <a class="text-decoration-none fw-bolder" href="{{route('category')}}">Découvrir nos propositions &rarr;</a>
                     </div>

@@ -55,15 +55,17 @@
 @include('navbar3')
 
 
-<script>
-  swal({
-    title: "Succés!",
-    text: "Annonce ajouté avec succés.",
-    icon: "success",
-    buttons: true,
-    timer: 3000,
-  });
-</script>
+
+@if(session('success'))
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: '{{ session('success') }}',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
 
     <!-- / Navbar-->    <!-- / Navbar-->
 

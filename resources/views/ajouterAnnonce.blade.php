@@ -600,6 +600,17 @@ label.radio .emot .mouth.sad {
 }
 	</style>
 <body>
+@if(session('success'))
+    <script>
+        Swal.fire({
+            title: 'Annonce Ajouté!',
+            text: '{{ session('success') }}',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        });
+    </script>
+@endif
+
 <div class="position-absolute z-index-0 top-10 bottom-0 start-0 end-0"  style="height:965px;">
                 <!-- Swiper Info -->
                 <div class="swiper-container overflow-hidden bg-light w-100 h-100"
@@ -668,12 +679,34 @@ label.radio .emot .mouth.sad {
 				<div class="col-12">
 					<div class="form-group">
 					<label for="categorie" class="form-label">Catégorie</label>
-						<select class="form-select" id="categorie" name="categorie"  required="">
-							<option value="">Veuillez selectionner une catégorie</option>
-							@foreach($categories as $categorie)
-								<option id="$objet->id_categorie" value="{{$categorie->id}}">{{$categorie->nom_categorie}}</option>
-							@endforeach
-						</select>
+          <select class="form-select" id="categorie" name="categorie" required="">
+    <option value="">Veuillez selectionner une catégorie</option>
+    @if(is_null($categories))
+    <script>
+    Swal.fire({
+        title: 'Aucun Objet',
+        text: 'Il semble que vous n\'avez ajouté aucun objet.',
+        icon: 'info',
+        confirmButtonText: 'Ajouter Un Objet',
+        showCancelButton: true,
+        cancelButtonText: 'Annuler',
+        cancelButtonColor: '#d33'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Redirect to the add object page
+            window.location.href = "{{route('ajouterObjet')}}";
+        }
+    });
+</script>
+
+
+    @else
+        @foreach($categories as $categorie)
+            <option id="$objet->id_categorie" value="{{$categorie->id}}">{{$categorie->nom_categorie}}</option>
+        @endforeach
+    @endif
+</select>
+
 					</div>
 				</div>
 			</div>
@@ -706,6 +739,7 @@ label.radio .emot .mouth.sad {
                             <textarea class="form-control" id="description" placeholder="Description" aria-label="With textarea" value="{{old('description')}}" name="description"></textarea>
                           </div>
                         </div>
+                        <br>
                         
 						<button id="button-84" class="first next" role="button">Continuer</button>
             
@@ -868,7 +902,7 @@ $('#objet').on('change', function() {
 });
 </script>
                       
-
+<br>
 <div class="parent">
 <button class="back">Retour</button>
 <button id="button-84" role="button" class="second next">Continuer</button>
@@ -995,7 +1029,9 @@ $('#objet').on('change', function() {
                     </div>
                     </div>
                     </div>
+                    <br>
 					<div class="parent">
+            
 <button class="back">Retour</button>
 <button id="button-84" role="button" type="submit">Publier</button>
 </div>
@@ -1134,6 +1170,7 @@ $buttons.on("click", function(e) {
                               }
                           });
                       </script>
+
 
 
 

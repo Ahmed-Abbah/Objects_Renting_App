@@ -1,13 +1,21 @@
 @include('header')
 
-@include('navbar2')
-
+@include('navbar3')
+<style>
+  section{
+    padding-top: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+    border: 1px solid black;
+    border-radius: 5px;
+  }
+</style>
 <body style="">
-<section class="mt-5 container " >
-
+<section class="mt-4 container " style="max-width: 750px;" >
+<h1 class="mb-4 display-5 fw-bold text-center" style="margin-top:30px;">Modifier Objet</h1>
 <form method="POST" action="{{ route('modObjets', ['id' => $objet->id]) }}" class="form-group" enctype="multipart/form-data">
     @csrf
     @method('PUT')
+    <label>Nom :</label>
     <input class="form-control @error('title') is-invalid @enderror" type="text" name="nom_objet" value="{{ $objet->nom_objet }}"><br>
     
     <select class="form-select" name="id_categorie">
@@ -51,7 +59,7 @@
 
             <center>
               <small style="color:black;display:block;margin:10px;font-size:bold;">
-              Veuillez uploader une ou plusieurs images en format(jpg, jpeg, png ou gif) .
+              Veuillez uploader une ou plusieurs images en format(jpg, jpeg, png ou gif) qui vont remplacer les anciens images .<br>
               </small>
             </center>
             <br>

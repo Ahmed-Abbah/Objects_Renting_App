@@ -33,6 +33,9 @@ href="https://unpkg.com/swiper@7/swiper-bundle.min.css"
 <!-- SweetAlert JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.5/sweetalert2.min.js" integrity="sha512-iP+7VnE3z3F7VUIj58LiaBo7Vlbbi+N3sNUszJFyW+VBxjv2QfLwkpz/foZuy+jGjT0yJm+lFbC0kr8WfOmkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.css">
+
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
 

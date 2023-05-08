@@ -13,14 +13,7 @@ data-bs-backdrop="static" aria-hidden="true">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
    
-    <script>
-        Swal.fire({
-            title: 'Success!',
-            text: '{{ session('success') }}',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        });
-    </script>
+    
 
 
     <form action="{{route('modifierAnnonce')}}" method="POST" id="edit_annonce_form" enctype="multipart/form-data">

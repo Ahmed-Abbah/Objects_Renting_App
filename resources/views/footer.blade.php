@@ -6,6 +6,7 @@
         
         <!-- Info Bar-->
         <div class="container mt-7">
+        <br>
         <div class="row">
     <!-- Boîte d'informations -->
     <div class="col-12 col-md-4 mb-3 mb-xxl-0 text-white" data-aos="fade-left">
@@ -63,7 +64,7 @@
                 <div
                     class="border-top-white-opacity justify-content-between flex-column flex-md-row align-items-center d-flex pt-6 mt-6 px-0">
                     <p class="small opacity-75">&copy; 2023 <a
-                            class="text-white" href="{{route('/welcome')}}">Location des objets Projet</a></p>
+                            class="text-white" href="{{route('/welcome')}}">Share It</a></p>
                     
                 </div>
             </div>

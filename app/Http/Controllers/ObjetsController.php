@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Objet;
+use App\Models\Annonce;
 use App\Models\Image;
+use App\Models\Reservation;
 use App\Models\Categorie;
 use App\Models\Disponibilite;
 use Illuminate\Support\Facades\Auth;
@@ -76,6 +78,22 @@ public function showModObjetForm($id)
 
 public function delete($id)
 {
+    $annonces = Annonce::where('id_objet', $id)->get();
+    foreach($annonces as $annonce){
+        $disponibilites=Disponibilite::where('id_annonce',$annonce->id)->get();
+        foreach($disponibilites as $disponibilite){
+            $disponibilite->delete();
+        }
+        $reservations=Reservation::where('id_annonce',$annonce->id)->get();
+        foreach($reservations as $reservation){
+            $reservation->delete();
+        }
+        $annonce->delete();
+    }
+    $images = Image ::where('id_annonce',$id)->get();
+    foreach($images as $image){
+        $image->delete();
+    }
     $objet = Objet::find($id);
     $objet->delete();
     
@@ -94,23 +112,23 @@ public function modObjets(Request $request, $id)
 if($request->file('images')){
             //delete previous images from storage 
             // Fetch the images that were uploaded for the given annonce_id
-            $images = Image::where('id_objet', $id)->get();
+            $images = Image::where('id_annonce', $id)->get();
 
             foreach ($images as $image) {
                 // Delete the image file from the storage
-                Storage::delete('public/images/objets/' . $image->image);
+                Storage::delete('public/images/annonce/' . $image->image);
             }
 
             // Remove all the corresponding database records
-            Image::where('id_objet', $id)->delete();
+            Image::where('id_annonce', $id)->delete();
             //TO DO 
             //Upload new Images
             foreach ($request->file('images') as $image) {
                 $fileName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('public/images/objets', $fileName);
+                $image->storeAs('public/images/annonce', $fileName);
                 $newImage =new Image ;
                 $newImage->image = $fileName;
-                $newImage->id_objet = $id;
+                $newImage->id_annonce = $id;
                 $newImage->save();
             }
     }

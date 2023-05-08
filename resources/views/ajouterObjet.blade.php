@@ -347,10 +347,10 @@
             <br>
        
       </div>
+                    <button  class="btn btn-dark w-100"  type="submit" >Ajouter</button>     
                       
                     </div>                  <!-- Checkout Shipping Method-->
                     
-                    <button  class="btn btn-dark w-100"  type="submit" >Ajouter</button>     
 
                     </div>
                     </form>

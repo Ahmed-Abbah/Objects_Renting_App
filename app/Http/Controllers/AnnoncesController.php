@@ -18,14 +18,22 @@ class AnnoncesController extends Controller
 {
     public function index()
 {   
-    $objets= Objet::all()->where('partner_id',Auth::user()->id);
-    $categories = Categorie::all();
-    foreach($objets as $objet){
-        $objet->images=Image::all()->where('id_annonce',$objet->id);
-    }
+    $objets = Objet::all()->where('partner_id', Auth::user()->id);
     
+    
+    foreach ($objets as $objet) {
+        $objet->images = Image::all()->where('id_annonce', $objet->id);
+        $IdCategoriesToShow[]=$objet->id_categorie; 
+    }
+    if(isset($IdCategoriesToShow)){
+        $categories = Categorie::whereIn('id', $IdCategoriesToShow)->get();
+    }else{
+        $categories=null;
+    }
+   
     return view('ajouterAnnonce', compact('categories', 'objets'));
 }
+
 
 
 
@@ -117,7 +125,8 @@ foreach($jours as $jour){
 }
 // dd($request);
 // dd($NbrAnnonces);
-return redirect('ajouterAnnonce')->with('success',$message);
+return $this->listerMesAnnonces()->with('success', 'Annonce Ajouté');
+
 }
 
 // public function listerMesAnnonces()
